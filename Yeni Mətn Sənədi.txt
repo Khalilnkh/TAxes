@@ -1,0 +1,57 @@
+public void Delete()
+        {
+            var drugstores = _drugStoreRepository.GetAll();
+            if (drugstores.Count>0)
+            {
+                ConsoleHelper.WriteTextWithColor(ConsoleColor.DarkMagenta, "All drugstores list");
+                foreach (var drugstore in drugstores)
+                {
+                    ConsoleHelper.WriteTextWithColor(ConsoleColor.DarkMagenta, $"Owner ID-{drugstore.Owner.ID} Drugstore Name-{drugstore.Name} Drugstore Address-{drugstore.Address}");
+                }
+                ConsoleHelper.WriteTextWithColor(ConsoleColor.DarkMagenta, "Please enter Drugstore Id");
+                string id = Console.ReadLine();
+                int chosenID;
+                var result=int.TryParse(id, out chosenID);
+                if (result)
+                {
+                    var drugstore = _drugStoreRepository.Get(d=>d.ID==chosenID);
+                    if (drugstore!=null)
+                    {
+                        string fullname = $"{drugstore.Name} {drugstore.Address} {drugstore.ContactNumber}";
+                        _drugStoreRepository.Delete(drugstore);
+                        ConsoleHelper.WriteTextWithColor(ConsoleColor.Green, $"{fullname} is deleted");
+                    }
+                    else
+                    {
+                        ConsoleHelper.WriteTextWithColor(ConsoleColor.Red, "Drugstore doesnt exist with this ID");
+                    }
+                }
+                else
+                {
+                    ConsoleHelper.WriteTextWithColor(ConsoleColor.Red, "Enter Id number in correct format");
+                }
+
+            }
+            else
+            {
+                ConsoleHelper.WriteTextWithColor(ConsoleColor.Red, "There is no any Drugstore");
+            }
+
+        }
+
+        public void GetAll()
+        {
+            var drugstores = _drugStoreRepository.GetAll();
+            if (drugstores.Count>0)
+            {
+                ConsoleHelper.WriteTextWithColor(ConsoleColor.DarkBlue, "All drugstores list");
+                foreach (var drugstore in drugstores)
+                {
+                    ConsoleHelper.WriteTextWithColor(ConsoleColor.Green, $"ID-{drugstore.ID} Name-{drugstore.Name} Address-{drugstore.Address}");
+                }
+            }
+            else
+            {
+                ConsoleHelper.WriteTextWithColor(ConsoleColor.Red, "There is no any drugstores");
+            }
+        }
